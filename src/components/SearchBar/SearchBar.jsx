@@ -1,7 +1,7 @@
-export function SearchBar({ query, dispatch }) {
+export function SearchBar({ query, dispatch, getWord }) {
   function handleSubmit(e) {
     e.preventDefault();
-    alert(query);
+    getWord();
   }
   return (
     <form className="relative my-6 lg:my-10" onSubmit={handleSubmit}>
@@ -17,6 +17,7 @@ export function SearchBar({ query, dispatch }) {
       <img
         className="absolute top-1/2 right-6 translate-y-[-50%] "
         src="/images/icon-search.svg"
+        onClick={(e) => handleSubmit(e)}
       />
     </form>
   );

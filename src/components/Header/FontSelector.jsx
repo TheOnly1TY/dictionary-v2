@@ -1,6 +1,6 @@
-export function FontOptionsModal({ dispatch, showFontOptions, fontStyle }) {
+export function FontSelector({ dispatch, showFontOptions, fontStyle }) {
   function handleSelectedFont(e) {
-    const SelectedFont = e.target.closest("h3").textContent;
+    const SelectedFont = e.target.closest("h3").innerHTML;
     if (!SelectedFont) return fontStyle;
     dispatch({ type: "setFontStyle", payload: SelectedFont });
   }

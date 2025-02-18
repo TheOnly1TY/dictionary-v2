@@ -1,17 +1,18 @@
-import { useEffect, useReducer } from "react";
+import { useReducer } from "react";
 
 import { Header } from "./components/Header/Header";
-import { Logo } from "./components/Header/Logo";
 import { SearchBar } from "./components/SearchBar/SearchBar";
+import { Main } from "./components/Main/Main.1";
 
 const initialState = {
   query: "",
+  searchedResult: [],
   showFontOptions: false,
   fontStyle: "Sans Serif",
   showBookMarks: false,
 
   // idle, loading, active, error
-  status: "active",
+  status: "idle",
 };
 
 function reducer(state, action) {
@@ -24,29 +25,48 @@ function reducer(state, action) {
       return { ...state, showBookMarks: !state.showBookMarks };
     case "searchedWord":
       return { ...state, query: action.payload };
+    case "searchedResult":
+      return {
+        ...state,
+        searchedResult: action.payload,
+        status: "active",
+      };
+    case "cur_status":
+      return { ...state, status: action.payload };
+    case "Error":
+      return { ...state, status: "error", searchedResult: action.payload };
   }
 }
 
 export default function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { query, showFontOptions, showBookMarks, fontStyle, status } = state;
+  const {
+    query,
+    searchedResult,
+    showFontOptions,
+    showBookMarks,
+    fontStyle,
+    status,
+  } = state;
 
-  // https://api.dictionaryapi.dev/api/v2/entries/en/<word>
+  async function getWord() {
+    try {
+      dispatch({ type: "cur_status", payload: "loading" });
+      const res = await fetch(
+        `https://api.dictionaryapi.dev/api/v2/entries/en/${query}`
+      );
+      const data = await res.json();
 
-  useEffect(() => {
-    async function getWord() {
-      try {
-        const res = await fetch(
-          " https://api.dictionaryapi.dev/api/v2/entries/en/keyboard"
-        );
-        const data = await res.json;
-        console.log(data);
-      } catch (error) {
-        console.error(error.message);
-      }
+      // FIXING ERROR ISSUE
+      if (!res.ok) throw new Error(JSON.stringify(data));
+
+      dispatch({ type: "searchedResult", payload: data[0] });
+    } catch (err) {
+      const dataErr = JSON.parse(err.message);
+      console.log(dataErr);
+      dispatch({ type: "Error", payload: dataErr });
     }
-    getWord();
-  }, []);
+  }
 
   function displayFontStyle(fontStyle) {
     if (fontStyle === "Sans Serif") {
@@ -72,8 +92,8 @@ export default function App() {
         showBookMarks={showBookMarks}
         fontStyle={fontStyle}
       />
-      <SearchBar query={query} dispatch={dispatch} />
-      <Main status={status} />
+      <SearchBar query={query} getWord={getWord} dispatch={dispatch} />
+      <Main status={status} searchedResult={searchedResult} />
     </div>
   );
 }
@@ -84,45 +104,20 @@ export function BreakLine({ width = "full", height = "1px", margin = "0 " }) {
   );
 }
 
-function Main({ status }) {
-  return (
-    <>
-      {status === "idle" && <Intro />}
-      {status === "loading" && <Loader />}
-      {status === "active" && <WordDetails />}
-    </>
-  );
+export function Error() {
+  return <h1>Word not found</h1>;
 }
 
-function Intro() {
-  return (
-    <div className="flex flex-col items-center mt-15">
-      <Logo />
-      <h2 className="text-2xl text-[#2d2d2d] font-bold mt-10">
-        Welcome to TY Dictionary👋
-      </h2>
-      <p className="text-base lg:text-xl text-[#757575] text-center mt-5">
-        Kindly type any word into the search box to find its full meaning,
-        pronunciation, see its transcription, discover similar words, plus more
-        helpful details-all in one place.
-      </p>
-    </div>
-  );
-}
-
-function Loader() {
-  return <div className="spinner"></div>;
-}
-
-function WordDetails() {
+export function WordDetails({ searchedResult }) {
+  const { word, phonetic } = searchedResult;
   return (
     <div>
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-[2rem] lg:text-[4rem] text-[#2d2d2d] font-bold ">
-            booking
+            {word}
           </h1>
-          <p className="lg:text-2xl text-purple font-medium">/ˈbʊkɪŋ/</p>
+          <p className="lg:text-2xl text-purple font-medium">{phonetic}</p>
         </div>
         <img src="/images/icon-play.svg" className="w-12 md:w-[75px]" />
       </div>
