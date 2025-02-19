@@ -1,8 +1,15 @@
-import { useReducer } from "react";
-
+import { useEffect, useReducer, useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBookmark } from "@fortawesome/free-regular-svg-icons";
+// import { faSolidBookmark } from "@fortawesome/free-solid-svg-icons";
+import { ToastContainer, toast } from "react-toastify";
 import { Header } from "./components/Header/Header";
 import { SearchBar } from "./components/SearchBar/SearchBar";
-import { Main } from "./components/Main/Main.1";
+import { Main } from "./components/Main/Main";
+import { Error } from "./components/Main/Error";
+import { FontSelector } from "./components/Header/FontSelector";
+import { BookMark } from "./components/Header/BookMark/BookMark";
+import { BreakLine } from "./BreakLine";
 
 const initialState = {
   query: "",
@@ -25,12 +32,14 @@ function reducer(state, action) {
       return { ...state, showBookMarks: !state.showBookMarks };
     case "searchedWord":
       return { ...state, query: action.payload };
+
     case "searchedResult":
       return {
         ...state,
         searchedResult: action.payload,
         status: "active",
       };
+
     case "cur_status":
       return { ...state, status: action.payload };
     case "Error":
@@ -40,6 +49,8 @@ function reducer(state, action) {
 
 export default function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const [bookmarkedWords, setBookmarkedWords] = useState([]);
+  const [shouldFetch, setShouldFetch] = useState(false);
   const {
     query,
     searchedResult,
@@ -49,24 +60,29 @@ export default function App() {
     status,
   } = state;
 
-  async function getWord() {
-    try {
-      dispatch({ type: "cur_status", payload: "loading" });
-      const res = await fetch(
-        `https://api.dictionaryapi.dev/api/v2/entries/en/${query}`
-      );
-      const data = await res.json();
+  useEffect(() => {
+    async function getWord() {
+      try {
+        dispatch({ type: "cur_status", payload: "loading" });
+        const res = await fetch(
+          `https://api.dictionaryapi.dev/api/v2/entries/en/${query}`
+        );
+        const data = await res.json();
 
-      // FIXING ERROR ISSUE
-      if (!res.ok) throw new Error(JSON.stringify(data));
+        if (!res.ok) throw new Error("definition not found");
 
-      dispatch({ type: "searchedResult", payload: data[0] });
-    } catch (err) {
-      const dataErr = JSON.parse(err.message);
-      console.log(dataErr);
-      dispatch({ type: "Error", payload: dataErr });
+        dispatch({ type: "searchedResult", payload: data[0] });
+      } catch (error) {
+        console.error(error.message);
+        dispatch({ type: "cur_status", payload: "error" });
+      }
     }
-  }
+
+    if (shouldFetch) {
+      getWord();
+      setShouldFetch(false);
+    }
+  }, [shouldFetch, query]);
 
   function displayFontStyle(fontStyle) {
     if (fontStyle === "Sans Serif") {
@@ -86,32 +102,71 @@ export default function App() {
         fontStyle
       )}`}
     >
-      <Header
+      <Header>
+        <FontSelector
+          dispatch={dispatch}
+          showFontOptions={showFontOptions}
+          fontStyle={fontStyle}
+        />
+        <BookMark
+          dispatch={dispatch}
+          showBookMarks={showBookMarks}
+          setShouldFetch={setShouldFetch}
+          bookmarkedWords={bookmarkedWords}
+          setBookmarkedWords={setBookmarkedWords}
+        />
+      </Header>
+      <SearchBar
+        query={query}
+        setShouldFetch={setShouldFetch}
         dispatch={dispatch}
-        showFontOptions={showFontOptions}
-        showBookMarks={showBookMarks}
-        fontStyle={fontStyle}
       />
-      <SearchBar query={query} getWord={getWord} dispatch={dispatch} />
-      <Main status={status} searchedResult={searchedResult} />
+      <Main
+        status={status}
+        bookmarkedWords={bookmarkedWords}
+        setBookmarkedWords={setBookmarkedWords}
+        searchedResult={searchedResult}
+      />
     </div>
   );
 }
 
-export function BreakLine({ width = "full", height = "1px", margin = "0 " }) {
+export function WordDetails({
+  searchedResult,
+  bookmarkedWords,
+  setBookmarkedWords,
+}) {
   return (
-    <div style={{ width, height, margin }} className=" bg-[#e9e9e9]"></div>
+    <div className=" mt-10">
+      <Words
+        searchedResult={searchedResult}
+        bookmarkedWords={bookmarkedWords}
+        setBookmarkedWords={setBookmarkedWords}
+      />
+      <MeaningDetails />
+    </div>
   );
 }
 
-export function Error() {
-  return <h1>Word not found</h1>;
-}
-
-export function WordDetails({ searchedResult }) {
+function Words({ searchedResult, bookmarkedWords, setBookmarkedWords }) {
   const { word, phonetic } = searchedResult;
+
+  const addWord = { id: new Date().getTime(), word, checked: true };
+  function addToBookmark() {
+    bookmarkedWords.map((book) => {
+      if (book.includes(addWord)) return;
+    });
+    toast.success("Word added to your Bookmarks", {
+      className: "custom-toast",
+      position: "top-center",
+      hideProgressBar: true,
+      closeOnClick: false,
+      autoClose: 1000,
+    });
+    setBookmarkedWords((word) => [...word, addWord]);
+  }
   return (
-    <div>
+    <>
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-[2rem] lg:text-[4rem] text-[#2d2d2d] font-bold ">
@@ -121,6 +176,41 @@ export function WordDetails({ searchedResult }) {
         </div>
         <img src="/images/icon-play.svg" className="w-12 md:w-[75px]" />
       </div>
+      <div onClick={() => addToBookmark()}>
+        <FontAwesomeIcon
+          icon={faBookmark}
+          size="lg"
+          className="absolute right-3.5 lg:right-7 text-text-secondary hover:text-purple cursor-pointer"
+        />
+        <ToastContainer />
+      </div>
+    </>
+  );
+}
+
+function MeaningDetails() {
+  return (
+    <div>
+      <div className="flex items-center mt-8 lg:mt-10">
+        <h3 className="text-2xl italic font-bold mr-6 ">noun</h3>
+        <BreakLine />
+      </div>
+      <p className="text-[20px] text-[#757575] mt-8 mb-6">Meaning</p>
+      <ul className="list-disc custom-bullet lg:ml-10 ">
+        <li className="text-lg text-[#2d2d2d] leading-6 mb-6">
+          (etc.) A set of keys used to operate a typewriter, computer etc.
+        </li>
+        <li className="text-lg text-[#2d2d2d] leading-6 mb-6">
+          A component of many instruments including the piano, organ, and
+          harpsichord consisting of usually black and white keys that cause
+          different tones to be produced when struck.
+        </li>
+        <li className="text-lg text-[#2d2d2d] leading-6 mb-6">
+          A device with keys of a musical keyboard, used to control electronic
+          sound-producing devices which may be built into or separate from the
+          keyboard device.
+        </li>
+      </ul>
     </div>
   );
 }

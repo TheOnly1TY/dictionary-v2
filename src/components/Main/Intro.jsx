@@ -2,7 +2,7 @@ import { Logo } from "../Header/Logo";
 
 export function Intro() {
   return (
-    <div className="flex flex-col items-center mt-15">
+    <div className="flex flex-col items-center mt-20">
       <Logo />
       <h2 className="text-2xl text-[#2d2d2d] font-bold mt-10">
         Welcome to TY Dictionary👋

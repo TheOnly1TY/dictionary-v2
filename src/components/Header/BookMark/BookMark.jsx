@@ -2,7 +2,13 @@ import { BookMarkList } from "./BookMarkList";
 import { BookMarkModal } from "./BookMarkModal";
 import { BookMarkIcon } from "./BookMarkIcon";
 
-export function BookMark({ dispatch, showBookMarks }) {
+export function BookMark({
+  dispatch,
+  setShouldFetch,
+  showBookMarks,
+  bookmarkedWords,
+  setBookmarkedWords,
+}) {
   return (
     <div>
       <BookMarkIcon dispatch={dispatch} />
@@ -12,7 +18,16 @@ export function BookMark({ dispatch, showBookMarks }) {
           <h2 className="text-xl text-word-primary font-bold p-3 lg:px-6">
             Bookmarked Words
           </h2>
-          {showBookMarks ? <BookMarkList /> : <EmptyBookMark />}
+          {!bookmarkedWords.length ? (
+            <EmptyBookMark />
+          ) : (
+            <BookMarkList
+              dispatch={dispatch}
+              setShouldFetch={setShouldFetch}
+              bookmarkedWords={bookmarkedWords}
+              setBookmarkedWords={setBookmarkedWords}
+            />
+          )}
         </BookMarkModal>
       )}
     </div>

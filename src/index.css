@@ -14,6 +14,19 @@
   --shadow-drop-shadow: 0px 5px 30px 0px rgba(0, 0, 0, 0.1);
 }
 
+.custom-toast {
+  color: #2d2d2d !important;
+  background-color: #ffffff;
+}
+
+.custom-toast svg {
+  fill: var(--color-purple);
+}
+
+.custom-toast-progress {
+  background-color: transparent !important;
+}
+
 /* SPINNER STYLES */
 .spinner {
   margin: 0 auto;
@@ -24,6 +37,10 @@
   background: var(--_g), var(--_g), var(--_g), var(--_g);
   background-size: 20% 50%;
   animation: l43 1s infinite linear;
+}
+
+.custom-bullet li::marker {
+  color: var(--color-purple);
 }
 @keyframes l43 {
   0% {
