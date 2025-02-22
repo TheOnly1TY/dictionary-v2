@@ -1,4 +1,4 @@
-import { WordDetails } from "../../App";
+import { WordDetails } from "./WordDataStore/WordDetails";
 import { Error } from "./Error";
 import { Intro } from "./Intro";
 import { Loader } from "./Loader";

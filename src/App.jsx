@@ -1,15 +1,15 @@
 import { useEffect, useReducer, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBookmark } from "@fortawesome/free-regular-svg-icons";
-// import { faSolidBookmark } from "@fortawesome/free-solid-svg-icons";
+import { faBookmark as faSolidBookmark } from "@fortawesome/free-solid-svg-icons";
 import { ToastContainer, toast } from "react-toastify";
+
 import { Header } from "./components/Header/Header";
 import { SearchBar } from "./components/SearchBar/SearchBar";
 import { Main } from "./components/Main/Main";
 import { Error } from "./components/Main/Error";
 import { FontSelector } from "./components/Header/FontSelector";
 import { BookMark } from "./components/Header/BookMark/BookMark";
-import { BreakLine } from "./BreakLine";
 
 const initialState = {
   query: "",
@@ -116,6 +116,7 @@ export default function App() {
           setBookmarkedWords={setBookmarkedWords}
         />
       </Header>
+
       <SearchBar
         query={query}
         setShouldFetch={setShouldFetch}
@@ -131,40 +132,38 @@ export default function App() {
   );
 }
 
-export function WordDetails({
+export function WordInfo({
   searchedResult,
   bookmarkedWords,
   setBookmarkedWords,
 }) {
-  return (
-    <div className=" mt-10">
-      <Words
-        searchedResult={searchedResult}
-        bookmarkedWords={bookmarkedWords}
-        setBookmarkedWords={setBookmarkedWords}
-      />
-      <MeaningDetails />
-    </div>
-  );
-}
-
-function Words({ searchedResult, bookmarkedWords, setBookmarkedWords }) {
   const { word, phonetic } = searchedResult;
 
-  const addWord = { id: new Date().getTime(), word, checked: true };
-  function addToBookmark() {
-    bookmarkedWords.map((book) => {
-      if (book.includes(addWord)) return;
+  const addWord = { word, checked: true };
+  const toastStyle = {
+    className: "custom-toast",
+    position: "top-center",
+    hideProgressBar: true,
+    closeOnClick: false,
+    autoClose: 1000,
+  };
+
+  function toggleBookmark() {
+    setBookmarkedWords((bookmarkword) => {
+      if (bookmarkword.some((item) => item.word === addWord.word)) {
+        toast.success("Word remove from your Bookmarks", toastStyle);
+        [...bookmarkword, { word, checked: false }];
+        return bookmarkword.filter((item) => item === false);
+      } else {
+        toast.success("Word added to your Bookmarks", toastStyle);
+        return [...bookmarkword, addWord];
+      }
     });
-    toast.success("Word added to your Bookmarks", {
-      className: "custom-toast",
-      position: "top-center",
-      hideProgressBar: true,
-      closeOnClick: false,
-      autoClose: 1000,
-    });
-    setBookmarkedWords((word) => [...word, addWord]);
   }
+  const isChecked = bookmarkedWords.some((item) => item.checked);
+  // const isChecked = bookmarkedWords.map((item) => item.checked);
+  console.log(isChecked);
+
   return (
     <>
       <div className="flex justify-between items-center">
@@ -176,41 +175,15 @@ function Words({ searchedResult, bookmarkedWords, setBookmarkedWords }) {
         </div>
         <img src="/images/icon-play.svg" className="w-12 md:w-[75px]" />
       </div>
-      <div onClick={() => addToBookmark()}>
+      <div onClick={() => toggleBookmark()}>
         <FontAwesomeIcon
-          icon={faBookmark}
+          icon={isChecked ? faSolidBookmark : faBookmark}
           size="lg"
           className="absolute right-3.5 lg:right-7 text-text-secondary hover:text-purple cursor-pointer"
         />
+
         <ToastContainer />
       </div>
     </>
-  );
-}
-
-function MeaningDetails() {
-  return (
-    <div>
-      <div className="flex items-center mt-8 lg:mt-10">
-        <h3 className="text-2xl italic font-bold mr-6 ">noun</h3>
-        <BreakLine />
-      </div>
-      <p className="text-[20px] text-[#757575] mt-8 mb-6">Meaning</p>
-      <ul className="list-disc custom-bullet lg:ml-10 ">
-        <li className="text-lg text-[#2d2d2d] leading-6 mb-6">
-          (etc.) A set of keys used to operate a typewriter, computer etc.
-        </li>
-        <li className="text-lg text-[#2d2d2d] leading-6 mb-6">
-          A component of many instruments including the piano, organ, and
-          harpsichord consisting of usually black and white keys that cause
-          different tones to be produced when struck.
-        </li>
-        <li className="text-lg text-[#2d2d2d] leading-6 mb-6">
-          A device with keys of a musical keyboard, used to control electronic
-          sound-producing devices which may be built into or separate from the
-          keyboard device.
-        </li>
-      </ul>
-    </div>
   );
 }
