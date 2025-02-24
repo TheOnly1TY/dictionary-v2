@@ -7,7 +7,7 @@ export function BookMarkIcon({ dispatch }) {
       <FontAwesomeIcon
         icon={faBookmark}
         size="lg"
-        className="text-text-secondary hover:text-purple cursor-pointer"
+        className="text-secondary hover:text-purple cursor-pointer"
       />
     </div>
   );

@@ -15,7 +15,7 @@ export function BookMark({
 
       {showBookMarks && (
         <BookMarkModal>
-          <h2 className="text-xl text-word-primary font-bold p-3 lg:px-6">
+          <h2 className="text-xl text-word-primary dark:text-white font-bold p-3 lg:px-6">
             Bookmarked Words
           </h2>
           {!bookmarkedWords.length ? (
@@ -35,5 +35,9 @@ export function BookMark({
 }
 
 function EmptyBookMark() {
-  return <p className="text-center my-8">📂No bookmarked words yet.</p>;
+  return (
+    <p className="text-center text-word-primary dark:text-white my-8">
+      📂No bookmarked words yet.
+    </p>
+  );
 }

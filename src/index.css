@@ -1,19 +1,27 @@
 @import url("https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lora:ital,wght@0,400..700;1,400..700&display=swap");
 @import "tailwindcss";
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
 @theme {
+  --breakpoint-xs: 714px;
+  --breakpoint-xss: 500px;
+
   --color-purple: #a445ed;
   --color-red: #ff5252;
-  --color-word-primary: #2d2d2d;
-  --color-text-secondary: #757575;
+  --color-primary-CLR: #2d2d2d;
+  --color-secondary: #757575;
 
   --font-sans-serif: "Inter", serif;
   --font-Serif: "Lora", serif;
   --font-Mono: "Inconsolata", serif;
 
   --shadow-drop-shadow: 0px 5px 30px 0px rgba(0, 0, 0, 0.1);
+  --shadow-dark-drop-shadow: 0px 5px 30px 0px #a445ed;
 }
 
+body {
+  @apply bg-white dark:bg-[#050505];
+}
 .custom-toast {
   color: #2d2d2d !important;
   background-color: #ffffff;

@@ -8,11 +8,11 @@ export function SearchBar({ query, dispatch, setShouldFetch }) {
   }
   return (
     <div>
-      <form className="relative mt-6 lg:mt-10" onSubmit={handleSubmit}>
+      <form className="relative mt-6 md:mt-10" onSubmit={handleSubmit}>
         <input
           type="text"
           placeholder="Search for any word..."
-          className={`w-full h-12 lg:h-16 p-6 text-base lg:text-xl text-[#2d2d2d] bg-[#f4f4f4] focus:outline-none font-bold rounded-2xl ${
+          className={`w-full h-12 md:h-16 p-6 text-base md:text-xl text-primary-CLR dark:text-white bg-[#f4f4f4] dark:bg-[#1f1f1f] focus:outline-none font-bold rounded-2xl ${
             emptyQuery
               ? "border border-red"
               : "focus:border focus:border-purple"
@@ -31,8 +31,8 @@ export function SearchBar({ query, dispatch, setShouldFetch }) {
         />
       </form>
       {emptyQuery && (
-        <p className="text-red text-base lg:text-[20px]">
-          Whoops, can't be empty...
+        <p className="text-red text-base md:text-xl">
+          Whoops, cant be empty...
         </p>
       )}
     </div>

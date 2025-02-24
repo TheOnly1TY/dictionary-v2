@@ -98,7 +98,7 @@ export default function App() {
 
   return (
     <div
-      className={`relative mx-auto w-full lg:max-w-[737px] lg:mt-[2rem] sm:px-0  ${displayFontStyle(
+      className={`relative mx-auto w-full xs:max-w-[689px] xss:max-w-[489px] lg:max-w-[737px] xss:mt-[2rem] sm:px-0  ${displayFontStyle(
         fontStyle
       )}`}
     >
@@ -119,8 +119,8 @@ export default function App() {
 
       <SearchBar
         query={query}
-        setShouldFetch={setShouldFetch}
         dispatch={dispatch}
+        setShouldFetch={setShouldFetch}
       />
       <Main
         status={status}
@@ -140,22 +140,25 @@ export function WordInfo({
   const { word, phonetic } = searchedResult;
 
   const addWord = { word, checked: true };
-  const toastStyle = {
-    className: "custom-toast",
-    position: "top-center",
-    hideProgressBar: true,
-    closeOnClick: false,
-    autoClose: 1000,
-  };
+
+  function notify(message) {
+    toast.success(message, {
+      className: "custom-toast",
+      position: "top-center",
+      hideProgressBar: true,
+      closeOnClick: false,
+      autoClose: 1000,
+    });
+  }
 
   function toggleBookmark() {
     setBookmarkedWords((bookmarkword) => {
       if (bookmarkword.some((item) => item.word === addWord.word)) {
-        toast.success("Word remove from your Bookmarks", toastStyle);
+        notify("Word remove from your Bookmarks");
         [...bookmarkword, { word, checked: false }];
         return bookmarkword.filter((item) => item === false);
       } else {
-        toast.success("Word added to your Bookmarks", toastStyle);
+        notify("Word added to your Bookmarks");
         return [...bookmarkword, addWord];
       }
     });
@@ -168,22 +171,23 @@ export function WordInfo({
     <>
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-[2rem] lg:text-[4rem] text-[#2d2d2d] font-bold ">
+          <h1 className="text-[2rem] xs:text-[4rem] text-primary dark:text-white font-bold">
             {word}
           </h1>
-          <p className="lg:text-2xl text-purple font-medium">{phonetic}</p>
+          <p className="md:text-2xl text-purple font-medium">{phonetic}</p>
         </div>
+
         <img src="/images/icon-play.svg" className="w-12 md:w-[75px]" />
       </div>
-      <div onClick={() => toggleBookmark()}>
+      <button onClick={() => toggleBookmark()}>
         <FontAwesomeIcon
           icon={isChecked ? faSolidBookmark : faBookmark}
           size="lg"
-          className="absolute right-3.5 lg:right-7 text-text-secondary hover:text-purple cursor-pointer"
+          className=" transition-transform active:scale-150 absolute right-3.5 md:right-7 text-secondary hover:text-purple active:text-purple cursor-pointer"
         />
 
         <ToastContainer />
-      </div>
+      </button>
     </>
   );
 }

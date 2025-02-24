@@ -8,7 +8,7 @@ export function WordDetails({
   setBookmarkedWords,
 }) {
   return (
-    <div className=" mt-10">
+    <div className="mt-10">
       <WordInfo
         searchedResult={searchedResult}
         bookmarkedWords={bookmarkedWords}
