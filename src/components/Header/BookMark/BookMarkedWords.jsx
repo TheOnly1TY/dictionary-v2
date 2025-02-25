@@ -15,7 +15,7 @@ export function BookMarkedWords({
   }
 
   return (
-    <li className="max-h-[150px] overflow-y-auto">
+    <li className="max-h-[150px] ">
       <div
         className=" flex justify-between items-center py-3 lg:px-6 px-3 hover:bg-gray-300 cursor-pointer z-30"
         onClick={() => newSearch(bookMarkWords.word)}

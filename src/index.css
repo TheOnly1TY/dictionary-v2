@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lora:ital,wght@0,400..700;1,400..700&display=swap");
 @import "tailwindcss";
-@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+@custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
   --breakpoint-xs: 714px;
@@ -16,7 +16,7 @@
   --font-Mono: "Inconsolata", serif;
 
   --shadow-drop-shadow: 0px 5px 30px 0px rgba(0, 0, 0, 0.1);
-  --shadow-dark-drop-shadow: 0px 5px 30px 0px #a445ed;
+  --shadow-darkmode-drop-shadow: 0px 5px 30px 0px #a445ed;
 }
 
 body {

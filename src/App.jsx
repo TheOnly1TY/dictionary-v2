@@ -2,7 +2,7 @@ import { useEffect, useReducer, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBookmark } from "@fortawesome/free-regular-svg-icons";
 import { faBookmark as faSolidBookmark } from "@fortawesome/free-solid-svg-icons";
-import { ToastContainer, toast } from "react-toastify";
+// import { ToastContainer, toast } from "react-toastify";
 
 import { Header } from "./components/Header/Header";
 import { SearchBar } from "./components/SearchBar/SearchBar";
@@ -49,7 +49,10 @@ function reducer(state, action) {
 
 export default function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const [bookmarkedWords, setBookmarkedWords] = useState([]);
+  const [bookmarkedWords, setBookmarkedWords] = useState(() => {
+    const savedBookmark = localStorage.getItem("items");
+    return savedBookmark ? JSON.parse(savedBookmark) : [];
+  });
   const [shouldFetch, setShouldFetch] = useState(false);
   const {
     query,
@@ -59,6 +62,10 @@ export default function App() {
     fontStyle,
     status,
   } = state;
+
+  useEffect(() => {
+    localStorage.setItem("items", JSON.stringify(bookmarkedWords));
+  }, [bookmarkedWords]);
 
   useEffect(() => {
     async function getWord() {
@@ -132,6 +139,9 @@ export default function App() {
   );
 }
 
+function Notify({ message }) {
+  return <div className="text-white">{message}</div>;
+}
 export function WordInfo({
   searchedResult,
   bookmarkedWords,
@@ -139,34 +149,19 @@ export function WordInfo({
 }) {
   const { word, phonetic } = searchedResult;
 
-  const addWord = { word, checked: true };
-
-  function notify(message) {
-    toast.success(message, {
-      className: "custom-toast",
-      position: "top-center",
-      hideProgressBar: true,
-      closeOnClick: false,
-      autoClose: 1000,
-    });
-  }
-
   function toggleBookmark() {
     setBookmarkedWords((bookmarkword) => {
-      if (bookmarkword.some((item) => item.word === addWord.word)) {
-        notify("Word remove from your Bookmarks");
-        [...bookmarkword, { word, checked: false }];
-        return bookmarkword.filter((item) => item === false);
+      const isBookmarked = bookmarkword.some((item) => item.word === word);
+      if (isBookmarked) {
+        <Notify message={"Word remove from your Bookmarks"} />;
+        return bookmarkword.filter((item) => item.word !== word);
       } else {
-        notify("Word added to your Bookmarks");
-        return [...bookmarkword, addWord];
+        <Notify message={"Word added to your Bookmarks"} />;
+        return [...bookmarkword, { word, checked: true }];
       }
     });
   }
-  const isChecked = bookmarkedWords.some((item) => item.checked);
-  // const isChecked = bookmarkedWords.map((item) => item.checked);
-  console.log(isChecked);
-
+  const isChecked = bookmarkedWords.some((item) => item.word === word);
   return (
     <>
       <div className="flex justify-between items-center">
@@ -183,10 +178,10 @@ export function WordInfo({
         <FontAwesomeIcon
           icon={isChecked ? faSolidBookmark : faBookmark}
           size="lg"
-          className=" transition-transform active:scale-150 absolute right-3.5 md:right-7 text-secondary hover:text-purple active:text-purple cursor-pointer"
+          className={`transition-transform active:scale-150 absolute right-3.5 md:right-7  hover:text-purple active:text-purple cursor-pointer ${
+            isChecked ? "text-purple" : "text-secondary"
+          }`}
         />
-
-        <ToastContainer />
       </button>
     </>
   );

@@ -23,7 +23,7 @@ export function FontSelector({ dispatch, showFontOptions, fontStyle }) {
       </div>
       {showFontOptions && (
         <div
-          className="absolute top-[120%] inline-flex flex-col justify-center min-w-[183px] h-[9.5rem] gap-3 p-4 mr-14 text-lg text-primary-CLR dark:text-white bg-white dark:bg-[#1f1f1f] font-bold shadow-drop-shadow dark:dark-drop-shadow rounded-2xl z-20"
+          className="absolute top-[120%] inline-flex flex-col justify-center min-w-[183px] h-[9.5rem] gap-3 p-4 mr-14 text-lg text-primary-CLR dark:text-white bg-white dark:bg-[#1f1f1f] font-bold shadow-drop-shadow dark:shadow-darkmode-drop-shadow rounded-2xl z-20"
           onClick={(e) => handleSelectedFont(e)}
         >
           <h3 className="font-sans-serif hover:text-purple">Sans Serif</h3>

@@ -17,22 +17,25 @@ export function BookMarkList({
   }
 
   return (
-    <ul>
-      {bookmarkedWords.map((words) => (
-        <BookMarkedWords
-          dispatch={dispatch}
-          setShouldFetch={setShouldFetch}
-          deleteBookMarkWords={deleteBookMarkWords}
-          bookMarkWords={words}
-          key={words.id}
-        />
-      ))}
+    <div>
+      {" "}
+      <ul className="max-h-[90px] lg:max-h-[100px] overflow-y-scroll">
+        {bookmarkedWords.map((words, index) => (
+          <BookMarkedWords
+            dispatch={dispatch}
+            setShouldFetch={setShouldFetch}
+            deleteBookMarkWords={deleteBookMarkWords}
+            bookMarkWords={words}
+            key={index}
+          />
+        ))}
+      </ul>
       <button
         className="float-right p-3 lg:px-6 hover:text-red cursor-pointer"
         onClick={() => clearBookMark()}
       >
         Clear Bookmark
       </button>
-    </ul>
+    </div>
   );
 }
