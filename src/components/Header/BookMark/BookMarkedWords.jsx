@@ -17,17 +17,19 @@ export function BookMarkedWords({
   return (
     <li className="max-h-[150px] ">
       <div
-        className=" flex justify-between items-center py-3 lg:px-6 px-3 hover:bg-gray-300 cursor-pointer z-30"
+        className=" flex justify-between items-center py-3 lg:px-6 px-3 hover:bg-[#e1e1e14d] active:bg-[#e1e1e14d] backdrop-blur-lg dark:hover:bg-[#2a2a2a] dark:active:bg-[#2a2a2a] cursor-pointer z-30"
         onClick={() => newSearch(bookMarkWords.word)}
       >
-        <h3 className="text-[15px]">{bookMarkWords.word}</h3>
+        <h3 className="text-[15px] text-primary-CLR dark:text-white">
+          {bookMarkWords.word}
+        </h3>
         <button
           className="z-40"
           onClick={(e) => deleteBookMarkWords(bookMarkWords, e)}
         >
           <FontAwesomeIcon
             icon={faXmark}
-            className="text-text-secondary z-40"
+            className="text-secondary hover:text-red active:text-red z-40 cursor-pointer"
           />
         </button>
       </div>

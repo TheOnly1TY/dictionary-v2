@@ -1,4 +1,4 @@
-import { WordInfo } from "../../../App";
+import { WordInfo } from "./WordInfo";
 import { MeaningOverview } from "./MeaningOverview";
 
 export function WordDetails({

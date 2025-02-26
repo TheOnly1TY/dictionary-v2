@@ -22,6 +22,42 @@
 body {
   @apply bg-white dark:bg-[#050505];
 }
+
+/* animation for bookmark drop down */
+.bookmark_dropdown {
+  animation: growDown 300ms ease-in-out forwards;
+  transform-origin: top center;
+}
+
+@keyframes growDown {
+  0% {
+    transform: scaleY(0);
+  }
+  80% {
+    transform: scaleY(1.1);
+  }
+  100% {
+    transform: scaleY(1);
+  }
+}
+
+/* animation for font selector drop down */
+.font_dropdown {
+  animation: growOut 300ms ease-in-out forwards;
+  transform-origin: top center;
+}
+@keyframes growOut {
+  0% {
+    transform: scale(0);
+  }
+  80% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
 .custom-toast {
   color: #2d2d2d !important;
   background-color: #ffffff;

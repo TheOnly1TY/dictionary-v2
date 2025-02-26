@@ -18,8 +18,7 @@ export function BookMarkList({
 
   return (
     <div>
-      {" "}
-      <ul className="max-h-[90px] lg:max-h-[100px] overflow-y-scroll">
+      <ul className="max-h-[90px] lg:max-h-[100px] overflow-y-scroll scroll-color">
         {bookmarkedWords.map((words, index) => (
           <BookMarkedWords
             dispatch={dispatch}
@@ -31,7 +30,7 @@ export function BookMarkList({
         ))}
       </ul>
       <button
-        className="float-right p-3 lg:px-6 hover:text-red cursor-pointer"
+        className="text-primary-CLR dark:text-white hover:text-red active:text-red float-right p-3 lg:px-6 cursor-pointer"
         onClick={() => clearBookMark()}
       >
         Clear Bookmark
