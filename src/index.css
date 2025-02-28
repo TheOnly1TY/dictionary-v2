@@ -61,6 +61,11 @@ body {
 .custom-toast {
   color: #2d2d2d !important;
   background-color: #ffffff;
+  border-radius: 10px;
+}
+.dark .custom-toast {
+  color: #ffffff !important;
+  background-color: #1f1f1f;
 }
 
 .custom-toast svg {
@@ -69,6 +74,12 @@ body {
 
 .custom-toast-progress {
   background-color: transparent !important;
+}
+@media (max-width: 500px) {
+  .custom-toast {
+    margin-top: 20px;
+    width: 300px;
+  }
 }
 
 /* SPINNER STYLES */
