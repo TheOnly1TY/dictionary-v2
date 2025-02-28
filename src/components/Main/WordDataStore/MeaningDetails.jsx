@@ -18,12 +18,14 @@ export function MeaningDetails({ meaningItem }) {
         ))}
       </ul>
       {synonyms.length > 0 && (
-        <div className="flex gap-2 break-words break-normal">
-          <h3 className="text-base md:text-xl text-secondary mr-2">Synonyms</h3>
+        <div className="flex flex-wrap gap-2">
+          <h3 className="text-base md:text-xl text-secondary mr-2 ">
+            Synonyms
+          </h3>
           {synonyms.map((synonym, index) => (
             <p
               key={index}
-              className="text-base md:text-xl text-purple hover:underline active:underline cursor-pointer"
+              className="text-base break-words md:text-xl text-purple hover:underline active:underline cursor-pointer"
             >
               {synonym + `${synonyms.length - 1 === index ? "." : ","} `}
             </p>
@@ -31,12 +33,12 @@ export function MeaningDetails({ meaningItem }) {
         </div>
       )}
       {antonyms.length > 0 && (
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           <h3 className="text-base md:text-xl text-secondary mr-2">Antonyms</h3>
           {antonyms.map((antonym, index) => (
             <p
               key={index}
-              className="text-base md:text-xl text-purple hover:underline cursor-pointer"
+              className="text-base break-words md:text-xl text-purple hover:underline cursor-pointer"
             >
               {antonym + `${antonyms.length - 1 === index ? "." : ","} `}
             </p>

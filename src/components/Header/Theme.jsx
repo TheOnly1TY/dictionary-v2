@@ -1,11 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export function Theme() {
   const [theme, setTheme] = useState(false);
 
-  theme
-    ? document.documentElement.classList.add("dark")
-    : document.documentElement.classList.remove("dark");
+  useEffect(() => {
+    theme
+      ? document.documentElement.classList.add("dark")
+      : document.documentElement.classList.remove("dark");
+  }, [theme]);
 
   return (
     <div
@@ -19,6 +21,7 @@ export function Theme() {
           } duration-500`}
         ></div>
       </label>
+
       <img src="/images/icon-moon.svg" alt="moon_icon" />
     </div>
   );

@@ -9,9 +9,9 @@ export function MeaningOverview({ searchedResult }) {
         <MeaningDetails key={index} meaningItem={meaningItem} />
       ))}
       <BreakLine margin="1rem 0" />
-      <div className="flex gap-3 mt-6">
+      <div className="flex flex-wrap gap-3 mt-6 sm:mb-10">
         <p className="text-sm text-secondary underline">Source</p>
-        <div className="flex gap-1">
+        <div className="flex break-words gap-1">
           <a
             href={sourceUrls}
             className="text-sm text-word-primary dark:text-white underline"

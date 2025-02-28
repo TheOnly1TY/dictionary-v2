@@ -11,7 +11,7 @@ export function WordInfo({
   setBookmarkedWords,
 }) {
   const { word, phonetics } = searchedResult;
-  const { text, audio } = phonetics[0];
+  const { text, audio } = phonetics[0] || [];
   const audioRef = useRef(new Audio(audio));
   let toastShown = false;
   const toastStyle = {
@@ -50,13 +50,15 @@ export function WordInfo({
           <h1 className="text-[2rem] xs:text-[4rem] text-primary dark:text-white font-bold">
             {word}
           </h1>
-          <p className="md:text-2xl text-purple font-medium">{text}</p>
+          {text && (
+            <p className="md:text-2xl text-purple font-medium">{text}</p>
+          )}
         </div>
-        {audio !== "" ? (
+        {audio && (
           <button onClick={() => audioRef.current.play()}>
             <img src="/images/icon-play.svg" className="w-12 md:w-[75px]" />
           </button>
-        ) : null}
+        )}
       </div>
       <button onClick={() => toggleBookmark()}>
         <FontAwesomeIcon
