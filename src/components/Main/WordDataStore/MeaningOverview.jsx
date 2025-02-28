@@ -1,12 +1,16 @@
 import { MeaningDetails } from "./MeaningDetails";
 import { BreakLine } from "../../../BreakLine";
 
-export function MeaningOverview({ searchedResult }) {
+export function MeaningOverview({ searchedResult, newSearch }) {
   const { meanings, sourceUrls } = searchedResult;
   return (
     <div>
       {meanings.map((meaningItem, index) => (
-        <MeaningDetails key={index} meaningItem={meaningItem} />
+        <MeaningDetails
+          key={index}
+          meaningItem={meaningItem}
+          newSearch={newSearch}
+        />
       ))}
       <BreakLine margin="1rem 0" />
       <div className="flex flex-wrap gap-3 mt-6 sm:mb-10">

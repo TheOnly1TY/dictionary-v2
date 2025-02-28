@@ -2,6 +2,7 @@ import { useState } from "react";
 
 export function SearchBar({ query, dispatch, setShouldFetch }) {
   const [emptyQuery, setEmptyQuery] = useState(false);
+
   function handleSubmit(e) {
     e.preventDefault();
     query === "" ? setEmptyQuery(true) : setShouldFetch(true);

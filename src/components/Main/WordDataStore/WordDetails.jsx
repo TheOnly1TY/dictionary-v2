@@ -1,21 +1,3 @@
-import { WordInfo } from "./WordInfo";
-import { MeaningOverview } from "./MeaningOverview";
-
-export function WordDetails({
-  searchedResult,
-  bookmarkedWords,
-  deleteBookMarkWords,
-  setBookmarkedWords,
-}) {
-  return (
-    <div className="mt-10">
-      <WordInfo
-        searchedResult={searchedResult}
-        bookmarkedWords={bookmarkedWords}
-        deleteBookMarkWords={deleteBookMarkWords}
-        setBookmarkedWords={setBookmarkedWords}
-      />
-      <MeaningOverview searchedResult={searchedResult} />
-    </div>
-  );
+export function WordDetails({ children }) {
+  return <div className="mt-10">{children}</div>;
 }

@@ -4,7 +4,7 @@ import { BookMarkIcon } from "./BookMarkIcon";
 
 export function BookMark({
   dispatch,
-  setShouldFetch,
+  newSearch,
   showBookMarks,
   bookmarkedWords,
   setBookmarkedWords,
@@ -23,7 +23,7 @@ export function BookMark({
           ) : (
             <BookMarkList
               dispatch={dispatch}
-              setShouldFetch={setShouldFetch}
+              newSearch={newSearch}
               bookmarkedWords={bookmarkedWords}
               setBookmarkedWords={setBookmarkedWords}
             />

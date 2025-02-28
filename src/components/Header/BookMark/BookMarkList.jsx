@@ -2,13 +2,14 @@ import { BookMarkedWords } from "./BookMarkedWords";
 
 export function BookMarkList({
   dispatch,
+  newSearch,
   bookmarkedWords,
   setBookmarkedWords,
-  setShouldFetch,
 }) {
   function clearBookMark() {
     setBookmarkedWords([]);
   }
+
   function deleteBookMarkWords(selectedword, e) {
     e.stopPropagation();
     setBookmarkedWords(
@@ -22,7 +23,7 @@ export function BookMarkList({
         {bookmarkedWords.map((words, index) => (
           <BookMarkedWords
             dispatch={dispatch}
-            setShouldFetch={setShouldFetch}
+            newSearch={newSearch}
             deleteBookMarkWords={deleteBookMarkWords}
             bookMarkWords={words}
             key={index}

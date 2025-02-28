@@ -1,8 +1,9 @@
 import { BreakLine } from "../../../BreakLine";
 import { WordDefinition } from "./WordDefinition";
 
-export function MeaningDetails({ meaningItem }) {
+export function MeaningDetails({ meaningItem, newSearch }) {
   const { partOfSpeech, definitions, synonyms, antonyms } = meaningItem;
+
   return (
     <>
       <div className="flex items-center mt-8 md:mt-10">
@@ -26,6 +27,7 @@ export function MeaningDetails({ meaningItem }) {
             <p
               key={index}
               className="text-base break-words md:text-xl text-purple hover:underline active:underline cursor-pointer"
+              onClick={() => newSearch(synonym)}
             >
               {synonym + `${synonyms.length - 1 === index ? "." : ","} `}
             </p>
@@ -39,6 +41,7 @@ export function MeaningDetails({ meaningItem }) {
             <p
               key={index}
               className="text-base break-words md:text-xl text-purple hover:underline cursor-pointer"
+              onClick={() => newSearch(antonym)}
             >
               {antonym + `${antonyms.length - 1 === index ? "." : ","} `}
             </p>

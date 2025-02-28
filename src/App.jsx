@@ -1,10 +1,9 @@
 import { useEffect, useReducer, useState } from "react";
-// import { ToastContainer, toast } from "react-toastify";
 
 import { Header } from "./components/Header/Header";
 import { SearchBar } from "./components/SearchBar/SearchBar";
 import { Main } from "./components/Main/Main";
-import { Error } from "./components/Main/Error";
+import { useFetch } from "./hooks/useFetch";
 import { FontSelector } from "./components/Header/FontSelector";
 import { BookMark } from "./components/Header/BookMark/BookMark";
 
@@ -50,7 +49,7 @@ export default function App() {
     const savedBookmark = localStorage.getItem("items");
     return savedBookmark ? JSON.parse(savedBookmark) : [];
   });
-  const [shouldFetch, setShouldFetch] = useState(false);
+
   const {
     query,
     searchedResult,
@@ -60,35 +59,7 @@ export default function App() {
     status,
   } = state;
 
-  useEffect(() => {
-    localStorage.setItem("items", JSON.stringify(bookmarkedWords));
-  }, [bookmarkedWords]);
-
-  useEffect(() => {
-    async function getWord() {
-      try {
-        dispatch({ type: "cur_status", payload: "loading" });
-        const res = await fetch(
-          `https://api.dictionaryapi.dev/api/v2/entries/en/${query}`
-        );
-        const data = await res.json();
-
-        if (!res.ok) throw new Error("definition not found");
-
-        dispatch({ type: "searchedResult", payload: data[0] });
-      } catch (error) {
-        console.error(error.message);
-        dispatch({ type: "cur_status", payload: "error" });
-      }
-    }
-
-    if (shouldFetch) {
-      getWord();
-      setShouldFetch(false);
-    }
-  }, [shouldFetch, query]);
-
-  function displayFontStyle(fontStyle) {
+  const displayFontStyle = (fontStyle) => {
     if (fontStyle === "Sans Serif") {
       return "font-san-serif";
     }
@@ -98,7 +69,18 @@ export default function App() {
     if (fontStyle === "Mono") {
       return "font-Mono";
     }
-  }
+  };
+
+  const newSearch = (word) => {
+    dispatch({ type: "searchedWord", payload: word });
+    setShouldFetch(true);
+  };
+
+  useEffect(() => {
+    localStorage.setItem("items", JSON.stringify(bookmarkedWords));
+  }, [bookmarkedWords]);
+
+  const { setShouldFetch } = useFetch(query, dispatch);
 
   return (
     <div
@@ -115,7 +97,7 @@ export default function App() {
         <BookMark
           dispatch={dispatch}
           showBookMarks={showBookMarks}
-          setShouldFetch={setShouldFetch}
+          newSearch={newSearch}
           bookmarkedWords={bookmarkedWords}
           setBookmarkedWords={setBookmarkedWords}
         />
@@ -128,6 +110,7 @@ export default function App() {
       />
       <Main
         status={status}
+        newSearch={newSearch}
         bookmarkedWords={bookmarkedWords}
         setBookmarkedWords={setBookmarkedWords}
         searchedResult={searchedResult}

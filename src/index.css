@@ -3,24 +3,36 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
+  /* breakpoint */
   --breakpoint-xs: 714px;
   --breakpoint-xss: 500px;
 
+  /* color */
   --color-purple: #a445ed;
   --color-red: #ff5252;
   --color-primary-CLR: #2d2d2d;
   --color-secondary: #757575;
 
+  /* font */
   --font-sans-serif: "Inter", serif;
   --font-Serif: "Lora", serif;
   --font-Mono: "Inconsolata", serif;
 
+  /* box-shadow */
   --shadow-drop-shadow: 0px 5px 30px 0px rgba(0, 0, 0, 0.1);
   --shadow-darkmode-drop-shadow: 0px 5px 30px 0px #a445ed;
 }
 
 body {
   @apply bg-white dark:bg-[#050505];
+}
+
+.playbox:hover svg path {
+  fill: #ffffff;
+}
+
+.playbox:hover svg circle {
+  fill-opacity: 1;
 }
 
 /* animation for bookmark drop down */
@@ -58,6 +70,7 @@ body {
   }
 }
 
+/* notification styles */
 .custom-toast {
   color: #2d2d2d !important;
   background-color: #ffffff;
@@ -74,12 +87,6 @@ body {
 
 .custom-toast-progress {
   background-color: transparent !important;
-}
-@media (max-width: 500px) {
-  .custom-toast {
-    margin-top: 20px;
-    width: 300px;
-  }
 }
 
 /* SPINNER STYLES */
@@ -127,8 +134,13 @@ body {
       calc(2 * 100% / 3) 50%, calc(3 * 100% / 3) 50%;
   }
 }
+
 @media (max-width: 500px) {
   body {
     padding: 1.5rem;
+  }
+  .custom-toast {
+    margin-top: 20px;
+    width: 300px;
   }
 }
