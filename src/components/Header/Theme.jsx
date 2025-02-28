@@ -1,25 +1,21 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export function Theme() {
-  const [theme, setTheme] = useState("dark");
+  const [theme, setTheme] = useState(false);
 
-  useEffect(() => {
-    if (theme === "dark") {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-    localStorage.setItem("theme", theme);
-  }, [theme]);
+  theme
+    ? document.documentElement.classList.add("dark")
+    : document.documentElement.classList.remove("dark");
+
   return (
     <div
-      onClick={() => setTheme(theme === "dark" ? "dark" : "light")}
+      onClick={() => setTheme(!theme)}
       className="flex justify-center items-center gap-3"
     >
-      <label className="block w-10 h-5 bg-[#757575] dark:bg-purple rounded-full ">
+      <label className="block w-10 h-5 bg-secondary dark:bg-purple rounded-full">
         <div
           className={`absolute w-3.5 h-3.5 bg-white rounded-full m-[3px] ${
-            theme === "dark" && "ml-[22px]"
+            theme && "ml-[22px]"
           } duration-500`}
         ></div>
       </label>
